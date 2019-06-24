@@ -65,9 +65,10 @@ print('Test error', score[0])
 print('Test accuracy', score[1])
 
 # ============================ Inferencing ===================================
-"""
-#model = tf.keras.models.load_model('balanced_model.h5')
+
+# model = tf.keras.models.load_model('balanced_model.h5')
 image = cv2.imread('') #input image here
+w, h = image.shape
 img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 img = cv2.resize(img, (28,28))
 ret,thresh1 = cv2.threshold(img,127,255,cv2.THRESH_BINARY)
@@ -76,5 +77,7 @@ start_time = time.time()
 yhat = model.predict(x)
 print('Inferencing time = ' + str(time.time()-start_time) + ' sec')
 idx = np.argmax(yhat)
-print(labels_map[idx])
-"""
+pred = labels_map[idx]
+cv2.rectangle(image, (w-20,h-30), (w, h), (0, 255, 0), cv2.FILLED)
+cv2.putText(image, pred, (w-15,h-25), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255, 255, 255), 2)
+cv2.imwrite('output.jpg', image)
